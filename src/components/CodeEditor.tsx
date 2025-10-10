@@ -64,7 +64,12 @@ function badCode() {
         value={code}
         onChange={(e) => onCodeChange(e.target.value)}
         className="min-h-[400px] font-mono text-sm bg-muted/50 border-border resize-none focus:border-primary transition-colors"
+        maxLength={5000}
       />
+      
+      <div className="text-xs text-muted-foreground text-right">
+        {code.length}/5000 characters
+      </div>
 
       <div className="flex items-center gap-2 text-xs text-muted-foreground">
         <div className="w-2 h-2 rounded-full bg-primary animate-pulse" />

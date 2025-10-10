@@ -20,11 +20,32 @@ export const RoastDisplay = ({ roast, isRoasting }: RoastDisplayProps) => {
     }
   };
 
-  const handleShare = () => {
-    toast({
-      title: "Share coming soon!",
-      description: "Social sharing will be available in the next update",
-    });
+  const handleShare = async () => {
+    if (roast) {
+      const shareText = `Check out this code roast from Roast My Code! 🔥\n\n${roast}`;
+      
+      if (navigator.share) {
+        try {
+          await navigator.share({
+            title: "Roast My Code",
+            text: shareText,
+            url: window.location.href,
+          });
+        } catch (error) {
+          if ((error as Error).name !== "AbortError") {
+            toast({
+              title: "Share failed",
+              description: "Could not share roast",
+              variant: "destructive",
+            });
+          }
+        }
+      } else {
+        // Fallback to Twitter
+        const twitterUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(shareText)}&url=${encodeURIComponent(window.location.href)}`;
+        window.open(twitterUrl, "_blank");
+      }
+    }
   };
 
   return (

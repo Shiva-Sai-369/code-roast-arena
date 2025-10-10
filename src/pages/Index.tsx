@@ -4,26 +4,68 @@ import { RoastDisplay } from "@/components/RoastDisplay";
 import { Navigation } from "@/components/Navigation";
 import { Code2, Flame } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { generateRoast } from "@/lib/roastGenerator";
+import { supabase } from "@/integrations/supabase/client";
+import { useToast } from "@/hooks/use-toast";
 
 const Index = () => {
   const [code, setCode] = useState("");
   const [language, setLanguage] = useState("javascript");
   const [roast, setRoast] = useState<string | null>(null);
   const [isRoasting, setIsRoasting] = useState(false);
+  const { toast } = useToast();
 
   const handleRoast = async () => {
-    if (!code.trim()) return;
+    if (!code.trim()) {
+      toast({
+        title: "No code provided",
+        description: "Please paste some code to roast!",
+        variant: "destructive",
+      });
+      return;
+    }
     
     setIsRoasting(true);
     setRoast(null);
     
-    // Simulate AI processing delay
-    await new Promise(resolve => setTimeout(resolve, 1500));
-    
-    const generatedRoast = generateRoast(code, language);
-    setRoast(generatedRoast);
-    setIsRoasting(false);
+    try {
+      const { data, error } = await supabase.functions.invoke("generate-roast", {
+        body: { code, language },
+      });
+
+      if (error) {
+        console.error("Function error:", error);
+        throw new Error(error.message || "Failed to generate roast");
+      }
+
+      if (data?.error) {
+        throw new Error(data.error);
+      }
+
+      setRoast(data.roast);
+    } catch (error) {
+      console.error("Error generating roast:", error);
+      
+      const errorMessage = error instanceof Error ? error.message : "Unknown error";
+      
+      toast({
+        title: "Roast generation failed",
+        description: errorMessage.includes("429") 
+          ? "Too many requests! Please try again in a moment."
+          : errorMessage.includes("402")
+          ? "AI credits depleted. Please add funds."
+          : "Failed to generate roast. Please try again.",
+        variant: "destructive",
+      });
+
+      // Fallback to a generic roast
+      setRoast(
+        "🔥 Well, I tried to roast your code but the AI got tired just looking at it. " +
+        "That's not a good sign!\n\n💡 Improvement: Try submitting less code at once, " +
+        "or check your network connection."
+      );
+    } finally {
+      setIsRoasting(false);
+    }
   };
 
   return (
