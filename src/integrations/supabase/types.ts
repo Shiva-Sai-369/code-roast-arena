@@ -7,20 +7,176 @@ export type Json =
   | Json[]
 
 export type Database = {
-  // Allows to automatically instantiate createClient with right options
-  // instead of createClient<Database, { PostgrestVersion: 'XX' }>(URL, KEY)
   __InternalSupabase: {
-    PostgrestVersion: "13.0.5"
+    PostgrestVersion: "12"
   }
   public: {
     Tables: {
-      [_ in never]: never
+      users: {
+        Row: {
+          id: string
+          email: string
+          username: string | null
+          display_name: string | null
+          avatar_url: string | null
+          bio: string | null
+          total_roasts: number
+          total_points: number
+          created_at: string
+          updated_at: string
+        }
+        Insert: {
+          id: string
+          email: string
+          username?: string | null
+          display_name?: string | null
+          avatar_url?: string | null
+          bio?: string | null
+          total_roasts?: number
+          total_points?: number
+          created_at?: string
+          updated_at?: string
+        }
+        Update: {
+          id?: string
+          email?: string
+          username?: string | null
+          display_name?: string | null
+          avatar_url?: string | null
+          bio?: string | null
+          total_roasts?: number
+          total_points?: number
+          created_at?: string
+          updated_at?: string
+        }
+      }
+      roasts: {
+        Row: {
+          id: string
+          user_id: string
+          code: string
+          language: string
+          roast_content: string
+          severity_level: number
+          is_public: boolean
+          likes_count: number
+          created_at: string
+        }
+        Insert: {
+          id?: string
+          user_id: string
+          code: string
+          language: string
+          roast_content: string
+          severity_level?: number
+          is_public?: boolean
+          likes_count?: number
+          created_at?: string
+        }
+        Update: {
+          id?: string
+          user_id?: string
+          code?: string
+          language?: string
+          roast_content?: string
+          severity_level?: number
+          is_public?: boolean
+          likes_count?: number
+          created_at?: string
+        }
+      }
+      badges: {
+        Row: {
+          id: string
+          name: string
+          description: string | null
+          icon: string | null
+          requirement_type: string
+          requirement_value: number | null
+          points_reward: number
+          created_at: string
+        }
+        Insert: {
+          id?: string
+          name: string
+          description?: string | null
+          icon?: string | null
+          requirement_type: string
+          requirement_value?: number | null
+          points_reward?: number
+          created_at?: string
+        }
+        Update: {
+          id?: string
+          name?: string
+          description?: string | null
+          icon?: string | null
+          requirement_type?: string
+          requirement_value?: number | null
+          points_reward?: number
+          created_at?: string
+        }
+      }
+      user_badges: {
+        Row: {
+          id: string
+          user_id: string
+          badge_id: string
+          earned_at: string
+        }
+        Insert: {
+          id?: string
+          user_id: string
+          badge_id: string
+          earned_at?: string
+        }
+        Update: {
+          id?: string
+          user_id?: string
+          badge_id?: string
+          earned_at?: string
+        }
+      }
+      roast_likes: {
+        Row: {
+          id: string
+          roast_id: string
+          user_id: string
+          created_at: string
+        }
+        Insert: {
+          id?: string
+          roast_id: string
+          user_id: string
+          created_at?: string
+        }
+        Update: {
+          id?: string
+          roast_id?: string
+          user_id?: string
+          created_at?: string
+        }
+      }
     }
     Views: {
-      [_ in never]: never
+      leaderboard: {
+        Row: {
+          id: string
+          username: string | null
+          display_name: string | null
+          avatar_url: string | null
+          total_roasts: number
+          total_points: number
+          badges_count: number
+          rank: number
+        }
+      }
     }
     Functions: {
-      [_ in never]: never
+      check_and_award_badges: {
+        Args: { user_uuid: string }
+        Returns: void
+      }
     }
     Enums: {
       [_ in never]: never

@@ -1,8 +1,82 @@
-# Welcome to your Lovable project
+# Code Roast Arena 🔥
+
+An AI-powered code roasting platform where developers can get hilarious, brutally honest feedback on their code!
 
 ## Project info
 
 **URL**: https://lovable.dev/projects/274daf6a-4256-4366-a31f-c9bed1cb0c7c
+
+## Features
+
+- 🔐 **Secure Authentication**: User signup/login required to access features
+- 🔥 **AI-Powered Roasts**: Generate hilarious roasts for your code
+- 🏆 **Leaderboard**: Compete with other developers
+- 🎖️ **Badges**: Earn achievements for your roasting activity
+- 📊 **User Profiles**: Track your stats and progress
+- 💾 **Database Integration**: All data stored securely in Supabase
+
+## Backend Architecture
+
+This project uses a **dedicated backend folder structure** with Supabase as the database and authentication provider. All backend code is organized in the `backend/` directory:
+
+```
+backend/
+├── config/          # Database configuration
+├── services/        # Business logic services
+│   ├── auth.service.ts
+│   ├── user.service.ts
+│   └── roast.service.ts
+└── supabase/        # Database schema and migrations
+    ├── schema.sql
+    └── seed.sql
+```
+
+## Setup Instructions
+
+### 1. Clone and Install
+
+```sh
+# Clone the repository
+git clone <YOUR_GIT_URL>
+
+# Navigate to the project directory
+cd code-roast-arena
+
+# Install dependencies
+npm i
+```
+
+### 2. Backend Setup
+
+**⚠️ IMPORTANT**: You must set up the backend before the app will work!
+
+Follow the detailed guide in [BACKEND_SETUP.md](./BACKEND_SETUP.md) to:
+
+1. Create a Supabase project
+2. Set up environment variables
+3. Run database migrations
+4. Configure authentication
+
+Quick start:
+
+```sh
+# 1. Copy the example env file
+cp .env.example .env.local
+
+# 2. Edit .env.local with your Supabase credentials
+# Get these from your Supabase project dashboard
+
+# 3. Run the database schema in Supabase SQL Editor
+# (See BACKEND_SETUP.md for details)
+```
+
+### 3. Start Development Server
+
+```sh
+npm run dev
+```
+
+Visit `http://localhost:5173` and sign up to start using the app!
 
 ## How can I edit this code?
 
